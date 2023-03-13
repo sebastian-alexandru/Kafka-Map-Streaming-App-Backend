@@ -1,0 +1,33 @@
+type Query {
+    locations: [GeoJsonQuery]
+}
+
+type GeoJsonQuery {
+    id: ID!
+    type: String
+    geometry: GeometryDTO
+    properties: Properties
+}
+
+type Properties {
+    name: String
+}
+
+interface GeometryDTO {
+    type: String
+}
+
+type GeometryLineDTO implements GeometryDTO {
+    type: String
+    lineCoordinates: [[Float]]
+}
+
+type GeometryPointDTO implements GeometryDTO {
+    type: String
+    pointCoordinates: [Float]
+}
+
+type GeometryPolygonDTO implements GeometryDTO {
+    type: String
+    polygonCoordinates: [[[Float]]]
+}

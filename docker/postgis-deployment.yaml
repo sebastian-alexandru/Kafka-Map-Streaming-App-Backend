@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgis-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgis
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: postgis
+    spec:
+      containers:
+        - name: postgis
+          image: postgis/postgis:latest
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_USER
+              value: postgres
+            - name: POSTGRES_PASSWORD
+              value: postgres
+            - name: POSTGRES_DB
+              value: spring_kafka_db
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgis-ip-service
+spec:
+  type: ClusterIP
+  selector:
+    app: postgis
+  ports:
+    - name: postgis
+      port: 5432
+      targetPort: 5432
